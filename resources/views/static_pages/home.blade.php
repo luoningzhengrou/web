@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Weibo App</title>
-</head>
-<body>
-<h1>主页</h1>
-</body>
-</html>
+@extends('layouts.default')
+@section('content')
+    <h1>主页</h1>
+    <a href="/create">创建用户</a>
+    <a href="/deposit">充值</a>
+    <a href="/login" target="_blank">登录</a>
+@stop
