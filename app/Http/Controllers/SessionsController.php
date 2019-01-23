@@ -57,8 +57,16 @@ class SessionsController extends Controller
         } elseif (isset($_SERVER['HTTP_X_REAL_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_X_REAL_IP'])) {
             $ip = $_SERVER['HTTP_X_REAL_IP'];
         }
+        if (getenv("HTTP_X_FORWARDED_FOR")){
+            $eip = getenv('HTTP_X_FORWARDED_FOR');
+        }elseif(getenv("HTTP_CLIENT_IP")){
+            $eip = getenv('HTTP_CLIENT_IP');
+        }else{
+            $eip = getenv("REMOTE_ADDR");
+        }
         $data = $_SERVER;
         $data['ip'] = $ip;
+        $data['eip'] = $eip;
         return view('users.checkip', compact('data'));
     }
 
