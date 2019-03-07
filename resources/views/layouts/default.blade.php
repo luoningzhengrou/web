@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>@yield('title','微博')</title>
+        <title>@yield('title','QINGYE')</title>
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <link rel="shortcut icon" href="https://iocaffcdn.phphub.org/uploads/sites/KDiyAbV0hj1ytHpRTOlVpucbLebonxeX.png"/>
     </head>
