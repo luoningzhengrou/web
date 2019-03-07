@@ -47,7 +47,6 @@ class SessionsController extends Controller
     }
 
     public function checkip(){
-        $taobaoip = 'http://ip.taobao.com/service/getIpInfo.php?ip=';
         $ip = $_SERVER['REMOTE_ADDR'];
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
             foreach ($matches[0] AS $xip) {
@@ -63,9 +62,9 @@ class SessionsController extends Controller
         } elseif (isset($_SERVER['HTTP_X_REAL_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_X_REAL_IP'])) {
             $ip = $_SERVER['HTTP_X_REAL_IP'];
         }
-        $info = json_decode(file_get_contents($taobaoip . $ip),true);
-        $data = $info['data'];
-        $data['ip'] = $ip;
+        $ip = '103.194.40.203';
+        $url = "http://ip-api.com/json/$ip?lang=zh-CN";
+        $data = json_decode(file_get_contents($url),true);
         return view('users.checkip', compact('data'));
     }
 

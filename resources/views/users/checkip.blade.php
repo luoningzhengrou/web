@@ -8,19 +8,25 @@
                 <div class="offset-md-2 col-md-8">
                     <table>
                         <tr>
-                            <td>您的IP：{{ $data['ip'] }}</td>
+                            <td>您的IP：{{ $data['query'] }}</td>
                         </tr>
-                        @if($data['country'] !== 'XX')
+                        @if($data['country'])
                         <tr>
                             <td>国家: {{ $data['country'] }}</td>
                         </tr>
-                        @endif
-                        @if($data['region'] !== 'XX')
                         <tr>
-                            <td>地区： {{ $data['region'] }} @if($data['city'] !== 'XX') {{ $data['city'] }} @endif @if($data['county'] !== 'XX'){{ $data['county'] }} @endif</td>
+                            <td>城市: {{ $data['city'] }}</td>
                         </tr>
                         @endif
-                        @if($data['isp'] !== 'XX')
+                        @if($data['region'])
+                        <tr>
+                            <td>经度：{{ $data['lon'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>纬度：{{ $data['lat'] }}</td>
+                        </tr>
+                        @endif
+                        @if($data['isp'])
                         <tr>
                             <td>运营商： {{ $data['isp'] }}</td>
                         </tr>
