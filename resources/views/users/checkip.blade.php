@@ -6,6 +6,7 @@
         <div class="offset-md-2 col-md-8">
             <div class="col-md-12">
                 <div class="offset-md-2 col-md-8">
+                    @if($data['status'] == 'success')
                     <table>
                         <tr>
                             <td>您的IP：{{ $data['query'] }}</td>
@@ -32,6 +33,9 @@
                         </tr>
                         @endif
                     </table>
+                    @else
+                        <p>恭喜你来到新的世界！</p>
+                    @endif
                 </div>
             </div>
         </div>
