@@ -62,7 +62,6 @@ class SessionsController extends Controller
         } elseif (isset($_SERVER['HTTP_X_REAL_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_X_REAL_IP'])) {
             $ip = $_SERVER['HTTP_X_REAL_IP'];
         }
-        $ip = '103.194.40.203';
         $url = "http://ip-api.com/json/$ip?lang=zh-CN";
         $data = json_decode(file_get_contents($url),true);
         return view('users.checkip', compact('data'));
