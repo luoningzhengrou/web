@@ -1,3 +1,6 @@
+<?php
+$site = $_SERVER['SERVER_NAME'];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +9,7 @@
 </head>
 
 <body>
-    <h1>感谢您在 Weibo App 网站进行注册！</h1>
+    <h1>感谢您在 {{ $site }} 网站进行注册！</h1>
     <p>
         请点击以下的链接完成注册：
         <a href="{{ route('confirm_email', $user->activation_token) }}">
