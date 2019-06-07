@@ -11,7 +11,7 @@
                             <td>
                                 <form name="form" action="checkip" method="get" style="text-align: center;">
                                     {{ csrf_field() }}
-                                    输入 IP：<input type="text" name="ip" onkeyup="value=value.replace(/[^\d.]/g,'')">
+                                    输入 IP：<input type="text" name="ip" onkeyup="value=value.replace(/[^\d.]/g,'')" autocomplete="off">
                                     <button type="submit" style="color: #040505">查询</button>
                                 </form>
                             </td>
