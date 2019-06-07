@@ -52,10 +52,10 @@ class SessionsController extends Controller
             $ip = ip2long($ip);
             $ip = long2ip($ip);
             if ($ip == '0.0.0.0'){
-                $ip = $_SERVER['REMOTE_ADDR'];
+                $ip = $this->getIp();
             }
         }else{
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = $this->getIp();
         }
         $url = 'http://ip.taobao.com/service/getIpInfo.php?ip=' . $ip;
         $c_data = json_decode(@file_get_contents($url),true);
@@ -76,6 +76,26 @@ class SessionsController extends Controller
             }
         }
         return view('users.checkip', compact('data'));
+    }
+
+    public function getIp()
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
+            foreach ($matches[0] AS $xip) {
+                if (!preg_match('#^(10|172\.16|192\.168)\.#', $xip)) {
+                    $ip = $xip;
+                    break;
+                }
+            }
+        } elseif (isset($_SERVER['HTTP_CLIENT_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        } elseif (isset($_SERVER['HTTP_X_REAL_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_X_REAL_IP'])) {
+            $ip = $_SERVER['HTTP_X_REAL_IP'];
+        }
+        return $ip;
     }
 
 }
