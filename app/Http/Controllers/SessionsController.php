@@ -47,13 +47,8 @@ class SessionsController extends Controller
     }
 
     public function checkip(Request $request){
-        $ip = $request->ip;
-        if ($ip){
-            $ip = ip2long($ip);
-            $ip = long2ip($ip);
-            if ($ip == '0.0.0.0'){
-                $ip = $this->getIp();
-            }
+        if (isset($request->ip) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $request->ip)){
+            $ip = $request->ip;
         }else{
             $ip = $this->getIp();
         }
@@ -63,7 +58,11 @@ class SessionsController extends Controller
         if ($c_data['code'] == 0){
             $data['status'] = 'success';
         }
-        if (isset($data['country']) && $data['country'] != '中国'){
+        if ($data['isp'] == '内网IP'){
+            $data['country'] = '内网IP';
+            $data['region'] = '内网IP';
+        }
+        if (isset($data['country']) && $data['country'] != '中国' && $data['isp'] != '内网IP'){
             $url = "http://ip-api.com/json/$ip?lang=zh-CN";
             $r_data = json_decode(@file_get_contents($url),true);
             $data = $r_data;
