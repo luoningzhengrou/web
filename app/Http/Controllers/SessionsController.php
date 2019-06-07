@@ -46,24 +46,35 @@ class SessionsController extends Controller
         return redirect('login');
     }
 
-    public function checkip(){
-        $ip = $_SERVER['REMOTE_ADDR'];
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
-            foreach ($matches[0] AS $xip) {
-                if (!preg_match('#^(10|172\.16|192\.168)\.#', $xip)) {
-                    $ip = $xip;
-                    break;
-                }
+    public function checkip(Request $request){
+        $ip = $request->ip;
+        if ($ip){
+            $ip = ip2long($ip);
+            $ip = long2ip($ip);
+            if ($ip == '0.0.0.0'){
+                $ip = $_SERVER['REMOTE_ADDR'];
             }
-        } elseif (isset($_SERVER['HTTP_CLIENT_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CF_CONNECTING_IP'])) {
-            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-        } elseif (isset($_SERVER['HTTP_X_REAL_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_X_REAL_IP'])) {
-            $ip = $_SERVER['HTTP_X_REAL_IP'];
+        }else{
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
-        $url = "http://ip-api.com/json/$ip?lang=zh-CN";
-        $data = json_decode(file_get_contents($url),true);
+        $url = 'http://ip.taobao.com/service/getIpInfo.php?ip=' . $ip;
+        $c_data = json_decode(@file_get_contents($url),true);
+        $data = $c_data['data'];
+        if ($c_data['code'] == 0){
+            $data['status'] = 'success';
+        }
+        if (isset($data['country']) && $data['country'] != '中国'){
+            $url = "http://ip-api.com/json/$ip?lang=zh-CN";
+            $r_data = json_decode(@file_get_contents($url),true);
+            $data = $r_data;
+            $data['ip'] = $r_data['query'];
+            if ($r_data['status'] == 'success'){
+                $data['country'] = $r_data['country'];
+                $data['region'] = $r_data['regionName'];
+                $data['city'] = $r_data['city'];
+                $data['isp'] = $r_data['isp'];
+            }
+        }
         return view('users.checkip', compact('data'));
     }
 

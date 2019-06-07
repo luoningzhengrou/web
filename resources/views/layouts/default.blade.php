@@ -4,6 +4,7 @@
         <title>@yield('title','QINGYE')</title>
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <link rel="shortcut icon" href="https://iocaffcdn.phphub.org/uploads/sites/KDiyAbV0hj1ytHpRTOlVpucbLebonxeX.png"/>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     </head>
     <body>
         @include('layouts._header')
